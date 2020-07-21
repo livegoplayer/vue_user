@@ -81,7 +81,7 @@
         });
       },
       logout(){
-        this.$post(userApi.userLogout);
+        this.$post(userApi.userLogout, {uid : this.$store.getters.getUserInfo.uid});
         //否则就跳到默认的首页
         if (this.$route.path !== "/main") {
           this.$router.push('/main')
