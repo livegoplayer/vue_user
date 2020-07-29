@@ -1,6 +1,8 @@
-const userApiHost = 'http://127.0.0.1'
-const userApiPort = '9091'
-const userApiPrefix = '/api/user/'
+import { apiConfig } from './config/index'
+
+const userApiHost = apiConfig.user_api_host
+const userApiPort = apiConfig.user_api_port
+const userApiPrefix = apiConfig.user_api_prefix
 
 const userApiLink = userApiHost + ':' + userApiPort + userApiPrefix
 
@@ -36,9 +38,9 @@ const userApi = {
   userLogout: userLogout,
 }
 
-const captchaApiHost = 'http://127.0.0.1'
-const captchaApiPort = '9091'
-const captchaApiPrefix = '/api/captcha/'
+const captchaApiHost = apiConfig.user_api_host
+const captchaApiPort = apiConfig.user_api_port
+const captchaApiPrefix = apiConfig.user_api_prefix
 
 const captchaApiLink = captchaApiHost + ':' + captchaApiPort + captchaApiPrefix
 

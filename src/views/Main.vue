@@ -23,9 +23,13 @@ export default {
 </script>
 
 <style scoped>
-.ver-part{
-  display: flex;
-  flex-direction: column; /* flex布局 内部对其方式*/
-}
+  .ver-part {
+    display: flex;
+    flex-direction: column; /* flex布局 内部对其方式*/
+    height: 100%;
+  }
 
+  .main{
+    height: 100%;
+  }
 </style>

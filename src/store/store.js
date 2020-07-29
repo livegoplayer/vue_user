@@ -24,6 +24,7 @@ const state = {
   getUserListAuthority: false,
   addUserRoleAuthority: false,
   delUserRoleAuthority: false,
+  token: "",
 }
 
 const getters = {   //实时监听state值的变化(最新状态)
@@ -47,6 +48,9 @@ const getters = {   //实时监听state值的变化(最新状态)
   },
   checkDelUserRoleAuthority() {
     return state.delUserRoleAuthority
+  },
+  getToken() {
+    return state.token
   },
 };
 
@@ -116,6 +120,9 @@ const mutations = {
   },
   setDelUserRoleAuthority(state, delUserRoleAuthority) {
     state.delUserRoleAuthority = delUserRoleAuthority
+  },
+  setToken(state, token){
+    state.token = token
   }
 };
 
@@ -140,6 +147,9 @@ const actions = {
   },
   setDelUserRoleAuthority(context, delUserRoleAuthority) {
     context.commit('delUserRoleAuthority', delUserRoleAuthority);
+  },
+  setToken(context, token) {
+    context.commit('setToken', token);
   }
 }
 

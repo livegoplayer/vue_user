@@ -1,24 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import { post } from '../assets/js/axios'
+import { userApi } from './api'
+import  store  from '../store/store'
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
   {
     path: '/main',
     name: 'Main',
@@ -61,4 +49,37 @@ const router = new VueRouter({
   routes
 })
 
+// 全局前置守卫
+router.beforeEach((to, from, next) => {
+  // 需要调用相关
+  checkUserStatus()
+  next()
+})
+
+function checkUserStatus () {
+  // 如果验证通过了
+
+  // 后端先获取当前页面的cookie，如果没有就从请求头中获取token参数
+  // 前端获取token参数，如果不为空则加到新的参数post里面
+  post(userApi.userCheckUserStatusApi).then(res => {
+    // 如果已经登录了
+    if (res.data.isLogin) {
+      // 设置全局的userInfo
+      store.dispatch('setLoginUser', res.data.userSession)
+      store.dispatch('setToken', res.data.token)
+    }
+  })
+}
+
+function getQueryVariable (variable) {
+  var query = window.location.search.substring(1)
+  var vars = query.split('&')
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=')
+    if (pair[0] === variable) {
+      return pair[1]
+    }
+  }
+  return ''
+}
 export default router

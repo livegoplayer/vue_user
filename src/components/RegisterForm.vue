@@ -112,25 +112,15 @@ export default {
       formLabelWidth: '120px'
     }
   },
-  props: [
-    'registerFormVisible'
-  ],
   watch: {
-    registerFormVisible (newName, oldName) {
-      this.formVisible = newName
-    },
-    formVisible (newName, oldName) {
-      this.formVisible = newName
-      this.$emit('registerformevent', newName)
-      // 获取二维码,每次打开的时候
-      if (newName === true) {
-        this.changeCaptcha()
-      }
-
-      console.log('formVisible from ' + oldName + ' to ' + newName)
-    }
   },
   methods: {
+    openForm(){
+      this.formVisible = true
+    },
+    closeForm(){
+      this.formVisible = false
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {

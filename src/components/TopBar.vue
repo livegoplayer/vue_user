@@ -2,6 +2,7 @@
   <div class="topbar">
     <div class="topbar-left">
       <img class="avatar" src="../assets/logo.png"/>
+      <span>user</span>
     </div>
     <div class="topbar-right">
       <span class="username">{{ username }}</span>
@@ -14,13 +15,13 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item
-          ><span @click="loginFormVisible = true">{{
+          ><span @click="openForm('LoginForm')">{{
               LoginTab
             }}</span></el-dropdown-item
           >
           <el-dropdown-item
           ><span
-          ><span @click="registerFormVisible = true">注册</span></span
+          ><span @click="openForm('RegisterForm')">注册</span></span
           ></el-dropdown-item
           >
           <el-dropdown-item
@@ -29,13 +30,11 @@
         </el-dropdown-menu>
       </el-dropdown>
       <LoginForm
-        :loginFormVisible="loginFormVisible"
-        @loginformevent="syncLoginFormVisible"
+        ref="LoginForm"
         @loginSuccess="checkUserStatus"
       ></LoginForm>
       <RegisterForm
-        :registerFormVisible="registerFormVisible"
-        @registerformevent="syncRegisterFormVisible"
+        ref="RegisterForm"
       ></RegisterForm>
     </div>
   </div>
@@ -46,50 +45,56 @@
 
   import LoginForm from "@/components/LoginForm.vue";
   import RegisterForm from "@/components/RegisterForm.vue";
+  import store from "../store/store";
 
   export default {
-    created: function () {
+    mounted: function () {
       this.checkUserStatus();
     },
     data() {
       return {
-        loginFormVisible: false,
-        registerFormVisible: false
       };
     },
     methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+      openForm(formRefName){
+        this.$refs[formRefName].openForm()
       },
-      syncLoginFormVisible(val) {
-        this.loginFormVisible = val;
-      },
-      syncRegisterFormVisible(val) {
-        this.registerFormVisible = val;
+      closeForm(formRefName){
+        this.$refs[formRefName].closeForm()
       },
       checkUserStatus() {
         // 如果验证通过了
-        this.$get(userApi.userCheckUserStatusApi).then(res => {
-          // 如果已经登录了
-          if (res.data.isLogin) {
-            //设置全局的userInfo
-            this.$store.dispatch('setLoginUser', res.data.userSession);
-          } else {
-            // 打开登录弹窗
-            this.loginFormVisible = true;
+        // 如果已经登录了
+        if (this.$store.getters.checkUserLogin) {
+          //如果有refer跳转回去
+          if (this.$route.query.refer) {
+            var token = this.$store.getters.getToken
+            window.location.href = this.$route.query.refer + "?token=" + token
+          }else if(this.$route.query.goto){
+            if (this.$route.query.goto == 2){
+              this.openForm("RegisterForm")
+              let newQuery = JSON.parse(JSON.stringify(this.$route.query)) // 深拷贝
+              delete newQuery.goto
+              this.$router.replace({ query: newQuery })
+            }
           }
-        });
-      },
-      logout(){
-        this.$post(userApi.userLogout, {uid : this.$store.getters.getUserInfo.uid});
-        //否则就跳到默认的首页
-        if (this.$route.path !== "/main") {
-          this.$router.push('/main')
-          location.reload()
-        }else {
-          location.reload()
+        } else {
+          // 打开登录弹窗
+          this.openForm("LoginForm")
         }
-
+      },
+      logout() {
+        this.$post(userApi.userLogout, {uid: this.$store.getters.getUserInfo.uid}).then(res => {
+            // 如果已经登录了
+            //否则就跳到默认的首页
+            if (this.$route.path !== "/main") {
+              this.$router.push('/main')
+              location.reload()
+            } else {
+              location.reload()
+            }
+          }
+        );
       }
     },
 
@@ -98,12 +103,6 @@
       RegisterForm
     },
     watch: {
-      loginFormVisible(newName, oldName) {
-        console.log("loginFormVisible from " + oldName + " to " + newName);
-      },
-      registerFormVisible(newName, oldName) {
-        console.log("registerFormVisible from " + oldName + " to " + newName);
-      }
     },
     computed: {
       LoginTab: function () {
@@ -121,8 +120,6 @@
       }
     }
   };
-  console.log("init loginFormVisible = false");
-  console.log("init registerFormVisible = false");
 </script>
 
 <style scoped>

@@ -55,7 +55,9 @@
   }
 
   .content {
-    margin: auto;
+    /*margin: auto;*/
+    width: 100%;
+    margin-bottom: 0px;
   }
 
   a {
@@ -64,6 +66,17 @@
 
   .router-link-active {
     text-decoration: none;
+  }
+
+  .page{
+    height: 100%;
+  }
+
+  .el-menu-vertical-demo:not(.el-menu--collapse){
+    min-height: 100% !important;
+  }
+  .left-menu{
+    min-height: 100% !important;
   }
 </style>
 
@@ -93,7 +106,6 @@
         this.addUserAuthority = this.$store.getters.checkAddUserAuthority
         this.delUserAuthority = this.$store.getters.checkDelUserAuthority
         this.getUserListAuthority = this.$store.getters.checkGetUserListAuthority
-        console.log(this.$store.state)
         this.addUserRoleAuthority = this.$store.getters.checkAddUserRoleAuthority
         this.delUserRoleAuthority = this.$store.getters.checkDelUserRoleAuthority
       }

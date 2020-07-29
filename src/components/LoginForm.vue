@@ -95,18 +95,15 @@ export default {
       }
     };
   },
-  props: ["loginFormVisible"],
   watch: {
-    loginFormVisible(newName, oldName) {
-      this.formVisible = newName;
-    },
-    formVisible(newName, oldName) {
-      this.formVisible = newName;
-      this.$emit("loginformevent", newName);
-      console.log("formVisible from " + oldName + " to " + newName);
-    }
   },
   methods: {
+    openForm() {
+      this.formVisible = true
+    },
+    closeForm(){
+      this.formVisible = false
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
@@ -115,9 +112,13 @@ export default {
         if (valid) {
           // 如果验证通过了
           this.$post(userApi.userLoginApi, this.loginForm).then(res => {
-            this.resetForm("loginForm");
-            this.formVisible = false;
-            this.$emit("loginSuccess");
+            //如果存在，说明登录成功
+            if (res.data.uid){
+              this.resetForm("loginForm");
+              this.formVisible = false;
+              this.$store.dispatch('setLoginUser', res.data.userSession)
+              this.$emit("loginSuccess", res.data.token);
+            }
           });
         }
       });
