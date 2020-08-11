@@ -57,7 +57,12 @@
     },
     methods: {
       openForm(formRefName){
+        console.log(formRefName)
+        if (formRefName === "RegisterForm") {
+          this.$refs[formRefName].changeCaptcha()
+        }
         this.$refs[formRefName].openForm()
+
       },
       closeForm(formRefName){
         this.$refs[formRefName].closeForm()
@@ -87,8 +92,8 @@
         this.$post(userApi.userLogout, {uid: this.$store.getters.getUserInfo.uid}).then(res => {
             // 如果已经登录了
             //否则就跳到默认的首页
-            if (this.$route.path !== "/main") {
-              this.$router.push('/main')
+            if (this.$route.path !== "/") {
+              this.$router.push('/')
               location.reload()
             } else {
               location.reload()

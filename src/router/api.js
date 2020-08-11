@@ -38,9 +38,9 @@ const userApi = {
   userLogout: userLogout,
 }
 
-const captchaApiHost = apiConfig.user_api_host
-const captchaApiPort = apiConfig.user_api_port
-const captchaApiPrefix = apiConfig.user_api_prefix
+const captchaApiHost = apiConfig.captcha_api_host
+const captchaApiPort = apiConfig.captcha_api_port
+const captchaApiPrefix = apiConfig.captcha_api_prefix
 
 const captchaApiLink = captchaApiHost + ':' + captchaApiPort + captchaApiPrefix
 

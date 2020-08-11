@@ -34,7 +34,7 @@
 </template>
 
 <script>
-
+import crypto from 'crypto'
 import { userApi, commonApi } from '../router/api.js'
 
 export default {
@@ -125,10 +125,20 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 如果验证通过了
-          this.$post(userApi.userRegisterApi, this.registerForm)
+          const md5 = crypto.createHash('md5')
+          md5.update(this.registerForm.password)
+          let md5password = md5.digest('hex')
+          var formData = {
+            username: this.registerForm.username,
+            password: md5password
+          }
+          this.$post(userApi.userRegisterApi, formData)
             .then(res => {
               this.resetForm('registerForm')
               this.formVisible = false
+              if (res.data.uid > 0){
+                this.$message.success("注册成功")
+              }
             })
         }
       })

@@ -10,10 +10,10 @@
           </template>
           <el-menu-item-group title="用户信息">
             <el-menu-item index="1-1">
-              <router-link :to="'/main/user_edit'"><span>个人信息</span></router-link>
+              <router-link :to="'/user_edit'"><span>个人信息</span></router-link>
             </el-menu-item>
             <el-menu-item index="1-1">
-              <router-link :to="'/main/role_list'"><span>角色列表</span></router-link>
+              <router-link :to="'/role_list'"><span>角色列表</span></router-link>
             </el-menu-item>
           </el-menu-item-group>
         </el-submenu>
@@ -24,7 +24,7 @@
           </template>
           <el-menu-item-group title="用户">
             <el-menu-item v-if="getUserListAuthority" index="2-2">
-              <router-link :to="'/main/user_list'"><span>用户列表</span></router-link>
+              <router-link :to="'/user_list'"><span>用户列表</span></router-link>
             </el-menu-item>
           </el-menu-item-group>
         </el-submenu>
