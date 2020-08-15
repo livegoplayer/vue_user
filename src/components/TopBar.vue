@@ -153,7 +153,7 @@
     obj[name] = val
     var params = JSON.stringify(obj).replace(/[\"\{\}]/g, '').replace(/\:/g, '=').replace(/\,/g, '&')
     if (params) {
-      newurl = baseUrl + '?' + JSON.stringify(obj).replace(/[\"\{\}]/g, '').replace(/\:/g, '=').replace(/\,/g, '&')
+      newurl = baseUrl + '?' + params
     }
     return newurl
   }
