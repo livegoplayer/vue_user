@@ -64,14 +64,12 @@ function checkUserStatus (next) {
   // 前端获取token参数，如果不为空则加到新的参数post里面
   post(userApi.userCheckUserStatusApi).then(res => {
     // 如果已经登录了
-    console.log(res)
     if (res.data.isLogin) {
       // 设置全局的userInfo
       store.dispatch('setLoginUser', res.data.userSession)
       store.dispatch('setToken', res.data.token)
     }
   }).then(next())
-
 }
 
 function getQueryVariable (variable) {
