@@ -136,7 +136,7 @@
     var query = "";
     var baseUrl = url
     if (url.indexOf("?") !== -1){
-      query = url.substring(url.indexOf("?"))
+      query = url.substring(url.indexOf("?") + 1)
       baseUrl = url.substring(0, url.indexOf("?"))
     }
     console.log(query)
