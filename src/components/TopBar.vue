@@ -142,18 +142,18 @@
     console.log(query)
     console.log(baseUrl)
     var newurl = baseUrl
+    var obj = {}
     if (query.indexOf(name) > -1) {
-      var obj = {}
       var arr = query.split('&')
       for (var i = 0; i < arr.length; i++) {
         arr[i] = arr[i].split('=')
         obj[arr[i][0]] = arr[i][1]
       }
-      obj[name] = val
-      var params = JSON.stringify(obj).replace(/[\"\{\}]/g, '').replace(/\:/g, '=').replace(/\,/g, '&')
-      if (params) {
-        newurl = baseUrl + '?' + JSON.stringify(obj).replace(/[\"\{\}]/g, '').replace(/\:/g, '=').replace(/\,/g, '&')
-      }
+    }
+    obj[name] = val
+    var params = JSON.stringify(obj).replace(/[\"\{\}]/g, '').replace(/\:/g, '=').replace(/\,/g, '&')
+    if (params) {
+      newurl = baseUrl + '?' + JSON.stringify(obj).replace(/[\"\{\}]/g, '').replace(/\:/g, '=').replace(/\,/g, '&')
     }
     return newurl
   }
