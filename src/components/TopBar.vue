@@ -74,7 +74,9 @@
           //如果有refer跳转回去
           if (this.$route.query.refer) {
             var token = this.$store.getters.getToken
-            window.location.href = this.$route.query.refer + "?token=" + token
+            if (token) {
+              window.location.href = this.$route.query.refer + "?token=" + token
+            }
           }else if(this.$route.query.goto){
             if (this.$route.query.goto == 2){
               this.openForm("RegisterForm")
