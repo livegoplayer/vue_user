@@ -70,6 +70,8 @@
       checkUserStatus() {
         // 如果验证通过了
         // 如果已经登录了
+        console.log(this.$store.getters.checkUserLogin)
+        console.log(this.$store.getters.getUserInfo)
         if (this.$store.getters.checkUserLogin) {
           //如果有refer跳转回去
           if (this.$route.query.refer) {
