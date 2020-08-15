@@ -133,6 +133,8 @@
   function replaceUrlVariable (url, name, val) {
     var query = url.substring(url.indexOf("?"))
     var baseUrl = url.substring(0, url.indexOf("?"))
+    console.log(query)
+    console.log(baseUrl)
     var newurl = baseUrl
     if (query.indexOf(name) > -1) {
       var obj = {}
