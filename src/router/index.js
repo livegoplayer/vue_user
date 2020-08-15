@@ -69,6 +69,8 @@ function checkUserStatus (next) {
       store.dispatch('setLoginUser', res.data.userSession)
       store.dispatch('setToken', res.data.token)
     }
+    console.log("user_res")
+    console.log(res)
   }).then(next())
 }
 
