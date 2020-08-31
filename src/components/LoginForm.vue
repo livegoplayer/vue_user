@@ -125,7 +125,8 @@ export default {
               this.resetForm("loginForm");
               this.formVisible = false;
               this.$store.dispatch('setLoginUser', res.data.userSession)
-              this.$emit("loginSuccess", res.data.token);
+              this.$store.dispatch('setToken', res.data.token)
+              this.$emit("loginSuccess");
             }
           });
         }

@@ -75,6 +75,7 @@
         if (this.$store.getters.checkUserLogin) {
           //如果有refer跳转回去
           if (this.$route.query.refer) {
+            console.log(this.$store.getters.getToken)
             var token = this.$store.getters.getToken
             if (token) {
               var url = decodeURIComponent(this.$route.query.refer)
