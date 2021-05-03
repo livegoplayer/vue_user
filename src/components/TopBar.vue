@@ -41,123 +41,119 @@
 </template>
 
 <script>
-  import {userApi} from "../router/api.js";
+import { userApi } from '../router/api.js'
 
-  import LoginForm from "@/components/LoginForm.vue";
-  import RegisterForm from "@/components/RegisterForm.vue";
-  import store from "../store/store";
+import LoginForm from '@/components/LoginForm.vue'
+import RegisterForm from '@/components/RegisterForm.vue'
 
-  export default {
-    mounted: function () {
-      this.checkUserStatus();
+export default {
+  mounted: function () {
+    this.checkUserStatus()
+  },
+  data () {
+    return {
+    }
+  },
+  methods: {
+    openForm (formRefName) {
+      console.log(formRefName)
+      if (formRefName === 'RegisterForm') {
+        this.$refs[formRefName].changeCaptcha()
+      }
+      this.$refs[formRefName].openForm()
     },
-    data() {
-      return {
-      };
+    closeForm (formRefName) {
+      this.$refs[formRefName].closeForm()
     },
-    methods: {
-      openForm(formRefName){
-        console.log(formRefName)
-        if (formRefName === "RegisterForm") {
-          this.$refs[formRefName].changeCaptcha()
+    checkUserStatus () {
+      // 如果验证通过了
+      // 如果已经登录了
+      if (this.$store.getters.checkUserLogin) {
+        // 如果有refer跳转回去
+        if (this.$route.query.refer) {
+          console.log(this.$store.getters.getToken)
+          var token = this.$store.getters.getToken
+          if (token) {
+            var url = decodeURIComponent(this.$route.query.refer)
+            url = replaceUrlVariable(url, 'token', token)
+            window.location.href = url
+          }
+        } else if (this.$route.query.goto) {
+          if (this.$route.query.goto === 2) {
+            this.openForm('RegisterForm')
+            const newQuery = JSON.parse(JSON.stringify(this.$route.query)) // 深拷贝
+            delete newQuery.goto
+            this.$router.replace({ query: newQuery })
+          }
         }
-        this.$refs[formRefName].openForm()
-
-      },
-      closeForm(formRefName){
-        this.$refs[formRefName].closeForm()
-      },
-      checkUserStatus() {
-        // 如果验证通过了
+      } else {
+        // 打开登录弹窗
+        this.openForm('LoginForm')
+      }
+    },
+    logout () {
+      this.$post(userApi.userLogout, { uid: this.$store.getters.getUserInfo.uid }).then(res => {
         // 如果已经登录了
-        console.log(this.$store.getters.checkUserLogin)
-        console.log(this.$store.getters.getUserInfo)
-        if (this.$store.getters.checkUserLogin) {
-          //如果有refer跳转回去
-          if (this.$route.query.refer) {
-            console.log(this.$store.getters.getToken)
-            var token = this.$store.getters.getToken
-            if (token) {
-              var url = decodeURIComponent(this.$route.query.refer)
-              url = replaceUrlVariable(url, "token", token)
-              window.location.href = url
-            }
-          }else if(this.$route.query.goto){
-            if (this.$route.query.goto == 2){
-              this.openForm("RegisterForm")
-              let newQuery = JSON.parse(JSON.stringify(this.$route.query)) // 深拷贝
-              delete newQuery.goto
-              this.$router.replace({ query: newQuery })
-            }
-          }
+        // 否则就跳到默认的首页
+        if (this.$route.path !== '/') {
+          this.$router.push('/')
+          location.reload()
         } else {
-          // 打开登录弹窗
-          this.openForm("LoginForm")
+          location.reload()
         }
-      },
-      logout() {
-        this.$post(userApi.userLogout, {uid: this.$store.getters.getUserInfo.uid}).then(res => {
-            // 如果已经登录了
-            //否则就跳到默认的首页
-            if (this.$route.path !== "/") {
-              this.$router.push('/')
-              location.reload()
-            } else {
-              location.reload()
-            }
-          }
-        );
       }
-    },
+      )
+    }
+  },
 
-    components: {
-      LoginForm,
-      RegisterForm
-    },
-    watch: {
-    },
-    computed: {
-      LoginTab: function () {
-        if (this.isLogin === true) {
-          return "切换";
-        } else {
-          return "登录";
-        }
-      },
-      username: function () {
-        return this.$store.getters.getUserInfo.username
-      },
-      avatar: function () {
-        return this.$store.getters.getUserInfo.avatar
+  components: {
+    LoginForm,
+    RegisterForm
+  },
+  watch: {
+  },
+  computed: {
+    LoginTab: function () {
+      if (this.isLogin === true) {
+        return '切换'
+      } else {
+        return '登录'
       }
+    },
+    username: function () {
+      return this.$store.getters.getUserInfo.username
+    },
+    avatar: function () {
+      return this.$store.getters.getUserInfo.avatar
     }
-  };
-
-  function replaceUrlVariable (url, name, val) {
-    var query = "";
-    var baseUrl = url
-    if (url.indexOf("?") !== -1){
-      query = url.substring(url.indexOf("?") + 1)
-      baseUrl = url.substring(0, url.indexOf("?"))
-    }
-    console.log(query)
-    console.log(baseUrl)
-    var newurl = baseUrl
-    var obj = {}
-    if (query.indexOf(name) > -1) {
-      var arr = query.split('&')
-      for (var i = 0; i < arr.length; i++) {
-        arr[i] = arr[i].split('=')
-        obj[arr[i][0]] = arr[i][1]
-      }
-    }
-    obj[name] = val
-    var params = JSON.stringify(obj).replace(/[\"\{\}]/g, '').replace(/\:/g, '=').replace(/\,/g, '&')
-    if (params) {
-      newurl = baseUrl + '?' + params
-    }
-    return newurl
   }
+}
+
+function replaceUrlVariable (url, name, val) {
+  var query = ''
+  var baseUrl = url
+  if (url.indexOf('?') !== -1) {
+    query = url.substring(url.indexOf('?') + 1)
+    baseUrl = url.substring(0, url.indexOf('?'))
+  }
+  console.log(query)
+  console.log(baseUrl)
+  var newurl = baseUrl
+  var obj = {}
+  if (query.indexOf(name) > -1) {
+    var arr = query.split('&')
+    for (var i = 0; i < arr.length; i++) {
+      arr[i] = arr[i].split('=')
+      obj[arr[i][0]] = arr[i][1]
+    }
+  }
+  obj[name] = val
+  var params = JSON.stringify(obj).replace(/["{}]/g, '').replace(/:/g, '=').replace(/,/g, '&')
+  if (params) {
+    newurl = baseUrl + '?' + params
+  }
+  return newurl
+}
 </script>
 
 <style scoped>

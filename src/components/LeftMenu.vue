@@ -82,34 +82,34 @@
 
 <script>
 
-  import {userApi} from "../router/api";
+import { userApi } from '../router/api'
 
-  export default {
-    data() {
-      return {
-        isCollapse: false,
-        addUserAuthority: false,
-        delUserAuthority: false,
-        getUserListAuthority: false,
-        addUserRoleAuthority: false,
-        delUserRoleAuthority: false
-      }
+export default {
+  data () {
+    return {
+      isCollapse: false,
+      addUserAuthority: false,
+      delUserAuthority: false,
+      getUserListAuthority: false,
+      addUserRoleAuthority: false,
+      delUserRoleAuthority: false
+    }
+  },
+  methods: {
+    handleOpen (key, keyPath) {
+      console.log(key, keyPath)
     },
-    methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath)
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath)
-      },
-      checkAuthority() {
-        this.addUserAuthority = this.$store.getters.checkAddUserAuthority
-        this.delUserAuthority = this.$store.getters.checkDelUserAuthority
-        this.getUserListAuthority = this.$store.getters.checkGetUserListAuthority
-        this.addUserRoleAuthority = this.$store.getters.checkAddUserRoleAuthority
-        this.delUserRoleAuthority = this.$store.getters.checkDelUserRoleAuthority
-      }
+    handleClose (key, keyPath) {
+      console.log(key, keyPath)
     },
-
+    checkAuthority () {
+      this.addUserAuthority = this.$store.getters.checkAddUserAuthority
+      this.delUserAuthority = this.$store.getters.checkDelUserAuthority
+      this.getUserListAuthority = this.$store.getters.checkGetUserListAuthority
+      this.addUserRoleAuthority = this.$store.getters.checkAddUserRoleAuthority
+      this.delUserRoleAuthority = this.$store.getters.checkDelUserRoleAuthority
+    }
   }
+
+}
 </script>

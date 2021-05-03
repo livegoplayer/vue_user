@@ -5,15 +5,14 @@
 </template>
 
 <script>
-  export default {
-    name: 'app',
-    components: {
-    }
-  }
+export default {
+  name: 'app',
+  components: {}
+}
 </script>
 
 <style>
-  #app {
-    padding: 0px !important;
-  }
+#app {
+  padding: 0px !important;
+}
 </style>

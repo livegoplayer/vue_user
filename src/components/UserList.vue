@@ -41,79 +41,78 @@
 </template>
 
 <style>
-  .user-edit {
-    text-align: center;
-  }
+.user-edit {
+  text-align: center;
+}
 
-  .show_user_roles {
-    color: deepskyblue;
-    cursor: pointer;
-  }
+.show_user_roles {
+  color: deepskyblue;
+  cursor: pointer;
+}
 </style>
 
 <script>
-  import {userApi} from "../router/api";
-  import UserRoleList from "./UserRoleList";
+import {userApi} from '../router/api'
+import UserRoleList from './UserRoleList'
 
-  export default {
-    data() {
-      return {
-        uid: 0,
-        tableData: [],
-        total: 0,
-        page: 0,
-        size: 5,
-        userRoleListVisible: false,
-        addUserRoleAuthority: false,
-        delUserRoleAuthority: false,
-        delUserAuthority: false,
-      }
+export default {
+  data() {
+    return {
+      uid: 0,
+      tableData: [],
+      total: 0,
+      page: 0,
+      size: 5,
+      userRoleListVisible: false,
+      addUserRoleAuthority: false,
+      delUserRoleAuthority: false,
+      delUserAuthority: false,
+    }
+  },
+  mounted() {
+    this.changeTableData()
+  },
+  methods: {
+    changeTableData() {
+      this.tableData = []
+      this.$get(userApi.userGetUserList, {page: this.page, size: this.size}).then(res => {
+        for (var key in res.data.userList) {
+          var data = {
+            uid: res.data.userList[key]["id"],
+            username: res.data.userList[key]["username"],
+          }
+          this.total = res.data.total
+          console.log(this.total)
+          this.tableData.push(data)
+        }
+      });
     },
-    mounted() {
+    handleCurrentChange(val) {
+      this.page = val
       this.changeTableData()
     },
-    methods: {
-      changeTableData() {
-        this.tableData = []
-        this.$get(userApi.userGetUserList, {page: this.page, size: this.size}).then(res => {
-          for (var key in res.data.userList) {
-            var data = {
-              uid: res.data.userList[key]["id"],
-              username: res.data.userList[key]["username"],
-            }
-            this.total = res.data.total
-            console.log(this.total)
-            this.tableData.push(data)
-          }
-        });
-      },
-      handleCurrentChange(val) {
-        this.page = val
-        this.changeTableData()
-      },
-      handleClick(row) {
-        this.$refs['userRoleList'].changeTableData(row.uid)
-        this.userRoleListVisible = true
-        this.addUserRoleAuthority = this.$store.getters.checkAddUserRoleAuthority
-        this.delUserRoleAuthority = this.$store.getters.checkDelUserRoleAuthority
-        this.delUserAuthority = this.$store.getters.checkDelUserAuthority
-      },
-      delUser(row) {
-        this.$refs['userRoleList'].changeTableData(row.uid)
-        this.$post(userApi.userDelUserApi, {
-          uid: row.uid,
-          operation_uid: this.$store.getters.getUserInfo.uid
-        }).then(res => {
-          //uid
-          this.changeTableData()
-        });
-      },
-      syncUserRoleListVisible(val) {
-        this.userRoleListVisible = val;
-      },
+    handleClick (row) {
+      this.$refs['userRoleList'].changeTableData(row.uid)
+      this.userRoleListVisible = true
+      this.addUserRoleAuthority = this.$store.getters.checkAddUserRoleAuthority
+      this.delUserRoleAuthority = this.$store.getters.checkDelUserRoleAuthority
+      this.delUserAuthority = this.$store.getters.checkDelUserAuthority
     },
-    components: {
-      UserRoleList
-    }
+    delUser (row) {
+      this.$refs['userRoleList'].changeTableData(row.uid)
+      this.$post(userApi.userDelUserApi, {
+        uid: row.uid,
+        operation_uid: this.$store.getters.getUserInfo.uid
+      }).then(res => {
+        this.changeTableData()
+      });
+    },
+    syncUserRoleListVisible(val) {
+      this.userRoleListVisible = val;
+    },
+  },
+  components: {
+    UserRoleList
   }
+}
 </script>

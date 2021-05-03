@@ -35,7 +35,7 @@ const userApi = {
   userGetRoleListApi: userGetRoleListApi,
   userGetUserRoleListApi: userGetUserRoleListApi,
   userGetUserList: userGetUserListApi,
-  userLogout: userLogout,
+  userLogout: userLogout
 }
 
 const captchaApiHost = apiConfig.captcha_api_host

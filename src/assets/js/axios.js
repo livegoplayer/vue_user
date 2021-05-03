@@ -1,10 +1,11 @@
 // axios.js 放入如下
 import axios from 'axios'
-import Qs from 'qs'
+// import Qs from 'qs'
 import Message from 'element-ui/packages/message/src/main'
 
 axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8'
 
 // http request 拦截器
 axios.interceptors.request.use(
@@ -39,7 +40,16 @@ axios.interceptors.response.use(
         })
       } else if (response.data.code === 2) {
         if (response.data.data.redirect_url) {
-          window.location.href = response.data.data.redirect_url + '?refer=' + window.location.href
+          let href = window.location.href.split('?')[0]
+          if (href.charAt(href.length - 1) === '/') {
+            href = href.substr(0, href.length - 1)
+          }
+          if (href !== response.data.data.redirect_url) {
+            alert(response.data.data.redirect_url)
+            alert(window.location.href)
+            alert(href)
+            window.location.href = response.data.data.redirect_url + '?refer=' + window.location.href
+          }
         } else {
           Message({
             showClose: true,
@@ -49,7 +59,7 @@ axios.interceptors.response.use(
         }
       }
 
-      if (process.env.NODE_ENV === "development"){
+      if (process.env.NODE_ENV === 'development') {
         console.log(response)
       }
       return response
@@ -91,22 +101,24 @@ export function get (url, params) {
  */
 export function post (url, data = {}) {
   return new Promise((resolve, reject) => {
+    // const json = JSON.stringify({ answer: 42 });
     axios({
       url: url,
       method: 'POST',
       data: data,
       transformRequest: [
         function (data) {
-          let ret = ''
-          for (const it in data) {
-            if (data[it] instanceof Array) {
-              // 处理数组参数
-              ret += Qs.stringify({ [it]: data[it] }, { arrayFormat: 'repeat' }) + '&'
-            } else {
-              ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-            }
-          }
-          return ret
+          // let ret = ''
+          return JSON.stringify(data)
+          // for (const it in data) {
+          //   if (data[it] instanceof Array) {
+          //     // 处理数组参数
+          //     ret += Qs.stringify({ [it]: data[it] }, { arrayFormat: 'repeat' }) + '&'
+          //   } else {
+          //     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          //   }
+          // }
+          // return ret
         }
       ]
     })

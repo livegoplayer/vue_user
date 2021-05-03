@@ -40,66 +40,66 @@
 </style>
 
 <script>
-  import {userApi} from "../router/api";
+import { userApi } from '../router/api'
 
-  import AddUserRole from "./AddUserRole"
+import AddUserRole from './AddUserRole'
 
-  export default {
-    data() {
-      return {
-        formVisible: false,
-        addUserRoleVisible: false,
-        uid: 0,
-        tableData: []
-      }
-    },
-    methods: {
-      changeTableData(uid) {
-        this.tableData = []
-        this.uid = uid
-        if (uid) {
-          this.$get(userApi.userGetUserRoleListApi, {uid: uid}).then(res => {
-            for (var role_id in res.data.userRoleList) {
-              var data = {
-                role_id: role_id,
-                role_name: res.data.userRoleList[role_id],
-              }
-              this.tableData.push(data)
-            }
-          });
-        }
-      },
-      handleClick(row) {
-        this.$post(userApi.userDelUserRoleApi, {uid: this.uid, role_id: row.role_id, operation_uid: this.$store.getters.getUserInfo.uid}).then(res => {
-          //uid
-          console.log(res)
-          this.changeTableData(this.uid)
-        });
-      },
-      showUserRoleList(event) {
-        var el = event.currentTarget;
-        alert("当前对象的内容：" + el.innerHTML);
-      },
-      syncAddUserRoleVisible(val){
-        this.addUserRoleVisible = val;
-      }
-    },
-    props: ["userRoleListVisible", "addUserRoleAuthority", "delUserRoleAuthority"],
-    watch: {
-      userRoleListVisible(newName, oldName) {
-        this.formVisible = newName;
-      },
-      formVisible(newName, oldName) {
-        this.formVisible = newName;
-        this.$emit("userrolelistevent", newName);
-        console.log("formVisible from " + oldName + " to " + newName);
-      },
-      addUserRoleVisible(newName, oldName){
-        console.log("addUserRoleVisible = " + this.addUserRoleVisible)
-      }
-    },
-    components: {
-      AddUserRole
+export default {
+  data () {
+    return {
+      formVisible: false,
+      addUserRoleVisible: false,
+      uid: 0,
+      tableData: []
     }
+  },
+  methods: {
+    changeTableData (uid) {
+      this.tableData = []
+      this.uid = uid
+      if (uid) {
+        this.$get(userApi.userGetUserRoleListApi, { uid: uid }).then(res => {
+          for (var role_id in res.data.userRoleList) {
+            var data = {
+              role_id: role_id,
+              role_name: res.data.userRoleList[role_id]
+            }
+            this.tableData.push(data)
+          }
+        })
+      }
+    },
+    handleClick (row) {
+      this.$post(userApi.userDelUserRoleApi, { uid: this.uid, role_id: row.role_id, operation_uid: this.$store.getters.getUserInfo.uid }).then(res => {
+        // uid
+        console.log(res)
+        this.changeTableData(this.uid)
+      })
+    },
+    showUserRoleList (event) {
+      var el = event.currentTarget
+      alert('当前对象的内容：' + el.innerHTML)
+    },
+    syncAddUserRoleVisible (val) {
+      this.addUserRoleVisible = val
+    }
+  },
+  props: ['userRoleListVisible', 'addUserRoleAuthority', 'delUserRoleAuthority'],
+  watch: {
+    userRoleListVisible (newName, oldName) {
+      this.formVisible = newName
+    },
+    formVisible (newName, oldName) {
+      this.formVisible = newName
+      this.$emit('userrolelistevent', newName)
+      console.log('formVisible from ' + oldName + ' to ' + newName)
+    },
+    addUserRoleVisible (newName, oldName) {
+      console.log('addUserRoleVisible = ' + this.addUserRoleVisible)
+    }
+  },
+  components: {
+    AddUserRole
   }
+}
 </script>

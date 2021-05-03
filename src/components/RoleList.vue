@@ -26,39 +26,39 @@
 </style>
 
 <script>
-  import {userApi} from "../router/api";
+import { userApi } from '../router/api'
 
-  export default {
-    data() {
-      return {
-        uid: 0,
-        tableData: []
+export default {
+  data () {
+    return {
+      uid: 0,
+      tableData: []
+    }
+  },
+  mounted () {
+    this.changeTableData()
+  },
+  methods: {
+    changeTableData () {
+      var uid = this.$store.getters.getRoleListUid
+      // 如果没有赋值就使用本地user
+      if (!uid) {
+        uid = this.$store.getters.getUserInfo.uid
+        this.$store.dispatch('setRoleListUid', uid)
       }
-    },
-    mounted() {
-      this.changeTableData()
-    },
-    methods: {
-      changeTableData() {
-        var uid = this.$store.getters.getRoleListUid
-        //如果没有赋值就使用本地user
-        if (!uid) {
-          uid = this.$store.getters.getUserInfo.uid
-          this.$store.dispatch('setRoleListUid', uid)
-        }
-        this.tableData = []
-        if (uid) {
-          this.$get(userApi.userGetUserRoleListApi, {uid: uid}).then(res => {
-            for (var role_id in res.data.userRoleList) {
-              var data = {
-                role_id: role_id,
-                role_name: res.data.userRoleList[role_id],
-              }
-              this.tableData.push(data)
+      this.tableData = []
+      if (uid) {
+        this.$get(userApi.userGetUserRoleListApi, { uid: uid }).then(res => {
+          for (var role_id in res.data.userRoleList) {
+            var data = {
+              role_id: role_id,
+              role_name: res.data.userRoleList[role_id]
             }
-          });
-        }
+            this.tableData.push(data)
+          }
+        })
       }
     }
   }
+}
 </script>

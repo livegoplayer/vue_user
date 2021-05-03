@@ -2,8 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { post } from '../assets/js/axios'
 import { userApi } from './api'
-import  store  from '../store/store'
-import {apiConfig} from "./config";
+import store from '../store/store'
+import { apiConfig } from './config'
 
 Vue.use(VueRouter)
 
@@ -46,7 +46,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,  //BASE_URL 和 vue.config.js 中的 publicPath 选项相符
+  base: process.env.BASE_URL, // BASE_URL 和 vue.config.js 中的 publicPath 选项相符
   routes
 })
 
@@ -54,7 +54,6 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // 需要调用相关
   checkUserStatus(next)
-
 })
 
 function checkUserStatus (next) {
@@ -69,8 +68,6 @@ function checkUserStatus (next) {
       store.dispatch('setLoginUser', res.data.userSession)
       store.dispatch('setToken', res.data.token)
     }
-    console.log("user_res")
-    console.log(res)
   }).then(next())
 }
 

@@ -115,10 +115,10 @@ export default {
   watch: {
   },
   methods: {
-    openForm(){
+    openForm () {
       this.formVisible = true
     },
-    closeForm(){
+    closeForm () {
       this.formVisible = false
     },
     submitForm (formName) {
@@ -127,7 +127,7 @@ export default {
           // 如果验证通过了
           const md5 = crypto.createHash('md5')
           md5.update(this.registerForm.password)
-          let md5password = md5.digest('hex')
+          const md5password = md5.digest('hex')
           var formData = {
             username: this.registerForm.username,
             password: md5password
@@ -136,8 +136,8 @@ export default {
             .then(res => {
               this.resetForm('registerForm')
               this.formVisible = false
-              if (res.data.uid > 0){
-                this.$message.success("注册成功")
+              if (res.data.uid > 0) {
+                this.$message.success('注册成功')
               }
             })
         }
@@ -149,6 +149,7 @@ export default {
     changeCaptcha () {
       this.$get(commonApi.captchaGetCaptcha)
         .then(res => {
+          console.log(res)
           this.registerForm.captchaId = res.data.captchaId
           this.captchaImg = res.data.captchaImg
         })
