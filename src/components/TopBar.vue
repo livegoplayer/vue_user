@@ -68,22 +68,19 @@ export default {
     checkUserStatus () {
       // 如果验证通过了
       // 如果已经登录了
-      if (this.$store.getters.checkUserLogin) {
+      if (this.$route.query.goto == 2) {
+        this.openForm('RegisterForm')
+        const newQuery = JSON.parse(JSON.stringify(this.$route.query)) // 深拷贝
+        delete newQuery.goto
+        this.$router.replace({ query: newQuery })
+      } else if (this.$store.getters.checkUserLogin) {
         // 如果有refer跳转回去
         if (this.$route.query.refer) {
-          console.log(this.$store.getters.getToken)
           var token = this.$store.getters.getToken
           if (token) {
             var url = decodeURIComponent(this.$route.query.refer)
             url = replaceUrlVariable(url, 'token', token)
             window.location.href = url
-          }
-        } else if (this.$route.query.goto) {
-          if (this.$route.query.goto == 2) {
-            this.openForm('RegisterForm')
-            const newQuery = JSON.parse(JSON.stringify(this.$route.query)) // 深拷贝
-            delete newQuery.goto
-            this.$router.replace({ query: newQuery })
           }
         }
       } else {
