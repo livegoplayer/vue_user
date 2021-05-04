@@ -79,7 +79,7 @@ export default {
             window.location.href = url
           }
         } else if (this.$route.query.goto) {
-          if (this.$route.query.goto === 2) {
+          if (this.$route.query.goto == 2) {
             this.openForm('RegisterForm')
             const newQuery = JSON.parse(JSON.stringify(this.$route.query)) // 深拷贝
             delete newQuery.goto

@@ -45,9 +45,6 @@ axios.interceptors.response.use(
             href = href.substr(0, href.length - 1)
           }
           if (href !== response.data.data.redirect_url) {
-            alert(response.data.data.redirect_url)
-            alert(window.location.href)
-            alert(href)
             window.location.href = response.data.data.redirect_url + '?refer=' + window.location.href
           }
         } else {
@@ -110,15 +107,6 @@ export function post (url, data = {}) {
         function (data) {
           // let ret = ''
           return JSON.stringify(data)
-          // for (const it in data) {
-          //   if (data[it] instanceof Array) {
-          //     // 处理数组参数
-          //     ret += Qs.stringify({ [it]: data[it] }, { arrayFormat: 'repeat' }) + '&'
-          //   } else {
-          //     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-          //   }
-          // }
-          // return ret
         }
       ]
     })
